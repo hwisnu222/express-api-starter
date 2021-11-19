@@ -1,0 +1,6 @@
+# change this name to mysql.env
+
+MYSQL_DATABASE=express
+MYSQL_USER=expressuser
+MYSQL_PASSWORD=expresspass
+MYSQL_ROOT_PASSWORD=expresspass

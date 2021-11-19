@@ -1,0 +1,51 @@
+version: "3.8"
+
+networks:
+  main-network:
+
+services:
+  server:
+    container_name: express_server
+    restart: unless-stopped
+    working_dir: /app
+    command: ["/bin/bash", "./entrypoint.sh"]
+    ports:
+      - 5000:5000
+    build:
+      context: .
+    depends_on:
+      - mysql
+    links:
+      - mysql:db
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - main-network
+  app-npm:
+    image: "jc21/nginx-proxy-manager:latest"
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "81:81"
+      - "443:443"
+    environment:
+      DB_SQLITE_FILE: "/data/database.sqlite"
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+    networks:
+      - main-network
+  phpmyadmin:
+    container_name: express_phpmyadmin
+    restart: unless-stopped
+    image: phpmyadmin
+    hostname: pma
+    links:
+      - mysql:db
+    ports:
+      - 8000:80
+    env_file:
+      - ./env/mysql.env
+    networks:
+      - main-network

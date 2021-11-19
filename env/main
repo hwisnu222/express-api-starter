@@ -1,0 +1,5 @@
+# change this name to main.env
+
+PORT=5000
+HOSTNAME=http://localhost
+SECRET_KEY=expresskey
