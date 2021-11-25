@@ -1,19 +1,17 @@
 const express = require("express"),
   router = express.Router(),
-  responses = require("../middlewares/responses");
+  fs = require("fs"),
+  path = require("path");
 
-// controllers
-const { index } = require("../controllers/v1/index.js");
-const { register } = require("../controllers/v1/authentication/register");
-const { login } = require("../controllers/v1/authentication/login");
+// insexing all routes file
+let routes = [];
+fs.readdirSync(__dirname).forEach((file) => {
+  const pathFile = path.join(__dirname, file);
+  if (pathFile !== __filename) {
+    routes.push(require(pathFile));
+  }
+});
 
-// authentication
-const { authentication } = require("../middlewares/authentication");
-
-router
-  .use(responses, authentication)
-  .get("/", index)
-  .post("/register", register)
-  .post("/login", login);
+router.use(routes);
 
 module.exports = router;
