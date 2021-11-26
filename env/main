@@ -2,4 +2,3 @@
 
 PORT=5000
 HOSTNAME=http://localhost
-SECRET_KEY=expresskey

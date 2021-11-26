@@ -5,6 +5,7 @@ const express = require("express"),
 
 // insexing all routes file
 let routes = [];
+// eslint-disable-line
 fs.readdirSync(__dirname).forEach((file) => {
   const pathFile = path.join(__dirname, file);
   if (pathFile !== __filename) {

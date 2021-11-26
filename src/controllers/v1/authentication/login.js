@@ -1,8 +1,9 @@
 // import model below
-const { User } = require("../../../../models");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
-const Joi = require("joi");
+const { User } = require("../../../../models"),
+  jwt = require("jsonwebtoken"),
+  bcrypt = require("bcrypt"),
+  Joi = require("joi"),
+  sign = require("../../../services/jsonwebtoken/sign");
 
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -26,8 +27,7 @@ const login = async (req, res) => {
     const comparePassword = await bcrypt.compare(password, account.password);
     if (!comparePassword) return res.error({ message: "password is wrong" });
 
-    const KEY = process.env.SECRET_KEY;
-    const token = jwt.sign({ id: account.id }, KEY);
+    const token = sign(account.id);
     return res.success({ result: { account, token } });
   } catch (err) {
     return res.internal({ errors: err });
